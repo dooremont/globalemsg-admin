@@ -1,0 +1,75 @@
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="css/globalemsg.css" />
+
+<div id="globalemsg-container">
+    <div id="globalemsg-header-container"><!-- --></div>
+
+    <div id="globalemsg-gms-container"><!-- --></div>
+
+    <form id="globalemsg-gms-form" role="form">
+        <div class="form-group">
+            <label for="globalemsg-gms-title">__MSG__GMS_TITLE__</label>
+            <input type="text" name="title" class="form-control" id="globalemsg-gms-title" placeholder="__MSG__ENTER_A_GMS_TITLE__">
+        </div>
+
+        <div class="form-group">
+            <label for="globalemsg-gms-description">__MSG__GMS_DESCRIPTION__</label>
+            <textarea name="description" class="form-control" id="globalemsg-gms-description" placeholder="__MSG__ENTER_A_GMS_DESCRIPTION__"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="globalemsg-gms-dateend">__MSG__GMS_DATESTART__   YYYY-MM-DD</label>
+            <input type="date" name="date_start"  data-provide="datepicker" class="form-control" id="globalemsg-gms-datestart" placeholder="__MSG__ENTER_A_GMS_DATESTART__">
+        </div>
+        
+       <div class="form-group">
+            <label for="globalemsg-gms-dateend">__MSG__GMS_DATEEND__</label>
+            <input type="date" name="date_end"  data-provide="datepicker" class="form-control" id="globalemsg-gms-dateend" placeholder="__MSG__ENTER_A_GMS_DATEEND__">
+        </div>				
+       	<div class="form-group">
+            <label for="globalemsg-gms-sendmail">__MSG__GMS_SENDMAIL__</label>
+            <input type="radio" name="send_mail" value="1"> __MSG__GMS_YES__  
+			<input type="radio" name="send_mail" value="0" checked> __MSG__GMS_NO__
+        </div>
+        <div class="form-group">
+            <label for="globalemsg-gms-level">__MSG__GMS_LEVEL__</label><br>
+            <input type="radio" name="level" value="1" checked> __MSG__GMS_NORMAL__<br>
+			<input type="radio" name="level" value="2"> __MSG__GMS_WARNING__<br>
+			<input type="radio" name="level" value="3"> __MSG__GMS_CRITICAL__
+        </div>
+
+
+        <button type="submit" class="btn btn-default">__MSG__CREATE_GMS__</button>
+    </form>
+</div>
+
+<div id="globalemsg-header-template"><!--
+    ${listHeader('__MSG__GMS_LIST__', false, false, false)}
+--></div>
+
+<div id="globalemsg-gms-template"><!--
+    {for gms in gmss}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <button type="button" class="btn btn-danger pull-right globalemsg-gms-delete" data-created="${gms.created}">
+                    {var title = oae.api.util.security().encodeForHTML(gms.title)}
+                    {var description = oae.api.util.security().encodeForHTML(gms.description)}
+                    {var date_start = new Date(gms.date_start);}
+                    {var date_end = new Date(gms.date_end);}
+                    {var send_mail = oae.api.util.security().encodeForHTML(gms.send_mail)}
+                     {var level = oae.api.util.security().encodeForHTML(gms.level)}
+                    <span class="sr-only">__MSG__DELETE_GMS_NAME__</span>
+                    <i class="icon-trash"></i>
+                </button>
+                <h3 class="panel-title oae-threedots">__MSG__GMS_TITLE__ : ${title}</h3>
+            </div>
+            <div class="panel-body">__MSG__GMS_DESCRIPTION__ : ${gms.description|encodeForHTML}<br>
+                __MSG__GMS_DATESTART__ ${date_start.toLocaleDateString("en-GB")}  __MSG__GMS_DATEEND__ ${date_end.toLocaleDateString("en-GB")} 
+                <br>__MSG__GMS_SENDMAIL__ ${send_mail}
+                <br>__MSG__GMS_LEVEL__ ${level}
+                </p></div>
+        </div>
+    {/for}
+--></div>
+
+<!-- JAVASCRIPT -->
+<script type="text/javascript" src="js/globalemsg.js"></script>
