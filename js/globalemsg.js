@@ -34,17 +34,17 @@ define(['jquery', 'oae.core'], function($, oae) {
                 'success': function(data) {
                     // Show a success notification when the task has been deleted
                     oae.api.util.notification(
-                        oae.api.i18n.translate('__MSG__GMS_DELETED__', 'tasklist'),
-                        oae.api.i18n.translate('__MSG__GMS_DELETE_SUCCESS__', 'tasklist')
+                        oae.api.i18n.translate('__MSG__GMS_DELETED__', 'globalemsg'),
+                        oae.api.i18n.translate('__MSG__GMS_DELETE_SUCCESS__', 'globalemsg')
                     );
                     // Retrieve the new list of tasks
-                    getTasks();
+                    getGms();
                 },
                 'error': function() {
                     // Show a failure notification when the task couldn't be deleted
                     oae.api.util.notification(
-                        oae.api.i18n.translate('__MSG__GMS_NOT_DELETED__', 'tasklist'),
-                        oae.api.i18n.translate('__MSG__GMS_DELETE_FAILED__', 'tasklist'),
+                        oae.api.i18n.translate('__MSG__GMS_NOT_DELETED__', 'globalemsg'),
+                        oae.api.i18n.translate('__MSG__GMS_DELETE_FAILED__', 'globalemsg'),
                         'error'
                     );
                 }
