@@ -12,3 +12,11 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+#globalemsg-container .globalemsg-gms-delete {
+    margin: -4px 0 0 12px;
+}
+
+#globalemsg-container .globalemsg-gms-delete i {
+    color: #FFF;
+    font-size: 20px;
+}

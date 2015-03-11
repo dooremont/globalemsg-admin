@@ -69,12 +69,30 @@ define(['jquery', 'oae.core'], function($, oae) {
                     getGms();
                     $('#globalemsg-gms-form', $rootel)[0].reset();
                 },
-                'error': function() {
+                'error': function(donnee) {
+                    console.log('Objest :',donnee);
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__GMS_NOT_CREATED__', 'globalemsg'),
                         oae.api.i18n.translate('__MSG__GMS_CREATE_FAILED__', 'globalemsg'),
                         'error'
                     );
+                    if (donnee.status ='402'){
+                        oae.api.util.notification(
+                        oae.api.i18n.translate('__MSG__GMS_NOT_CREATED__', 'globalemsg'),
+                        oae.api.i18n.translate('__MSG__GMS_DATE_SUP__', 'globalemsg'),
+                        'error'
+                    );
+
+                    }
+                       if (donnee.status ='401'){
+                        oae.api.util.notification(
+                        oae.api.i18n.translate('__MSG__GMS_NOT_CREATED__', 'globalemsg'),
+                        oae.api.i18n.translate('__MSG__GMS_DATE_EQUAL__', 'globalemsg'),
+                        'error'
+                    );
+
+                    }
+
                 }
             });
 
@@ -90,6 +108,7 @@ define(['jquery', 'oae.core'], function($, oae) {
             oae.api.util.template().render($('#globalemsg-gms-template', $rootel), {
                 'gmss': gmss
             }, $('#globalemsg-gms-container', $rootel));
+             console.log("List gmss",gmss);
         };
 
         /**
@@ -130,6 +149,115 @@ define(['jquery', 'oae.core'], function($, oae) {
             oae.api.util.template().render($('#globalemsg-header-template', $rootel), null, $('#globalemsg-header-container', $rootel));
         };
 
+
+       /**
+         * Set up the validation on the register form, including the error messages
+         */
+        var setUpValidation2 = function() {
+            var validateOpts2 = {
+                'rules': {
+                    'username': {
+                        'minlength': 3,
+                        'nospaces': true,
+                        'validchars': true,
+                        'usernameavailable': true
+                    },
+                    'password': {
+                        'minlength': 6
+                    },
+                    'password_repeat': {
+                        'equalTo': '#register-password'
+                    }
+                },
+                'messages': {
+                    'title': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_TITLE__', 'globalemsg')
+                    },
+                    'description': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_DESCRIPTION__', 'globalemsg')
+                    },
+                    'date_start': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_DATE_START__', 'globalemsg')
+                    },
+                    'date_end': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_DATE_END__', 'register')
+                    },
+                    'email': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_A_VALID_EMAIL_ADDRESS__'),
+                        'email': oae.api.i18n.translate('__MSG__THIS_IS_AN_INVALID_EMAIL_ADDRESS__')
+                    },
+                    'username': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_USERNAME__'),
+                        'minlength': oae.api.i18n.translate('__MSG__THE_USERNAME_SHOULD_BE_AT_LEAST_THREE_CHARACTERS_LONG__', 'register'),
+                        'nospaces': oae.api.i18n.translate('__MSG__THE_USERNAME_SHOULDNT_CONTAIN_SPACES__')
+                    },
+                    'password': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_PASSWORD__'),
+                        'minlength': oae.api.i18n.translate('__MSG__YOUR_PASSWORD_SHOULD_BE_AT_LEAST_SIX_CHARACTERS_LONG__')
+                    },
+                    'password_repeat': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_REPEAT_YOUR_PASSWORD__'),
+                        'passwordmatch': oae.api.i18n.translate('__MSG__THIS_PASSWORD_DOES_NOT_MATCH_THE_FIRST_ONE__')
+                    },
+                    'termsandconditions': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ACCEPT_THE_TERMS_AND_CONDITIONS__', 'register')
+                    }
+                },
+                'methods': {
+                    'validchars': {
+                        'method': function(value, element) {
+                            return this.optional(element) || !(/[<>\\\/{}\[\]!@#\$%\^&\*,:]+/i.test(value));
+                        },
+                        'text': oae.api.i18n.translate('__MSG__ACCOUNT_INVALIDCHAR__')
+                    },
+                    'usernameavailable': {
+                        'method': function(value, element) {
+                            var response = false;
+                            isUserNameAvailable(value, function(available) {
+                                response = available;
+                                // Show the available icon if the username is available, otherwise show the unavailable icon
+                                if (available) {
+                                    $('#register-username-available', $rootel).removeClass('fa-times').addClass('fa-check');
+                                } else {
+                                    $('#register-username-available', $rootel).removeClass('fa-check').addClass('fa-times');
+                                }
+                            });
+                            return response;
+                        },
+                        'text': oae.api.i18n.translate('__MSG__THIS_USERNAME_HAS_ALREADY_BEEN_TAKEN__')
+                    }
+                },
+                'submitHandler': createGms
+            };
+            oae.api.util.validation().validate($('#globalemsg-gms-form', $rootel), validateOpts);
+        };
+
+        
+
+      var setUpValidation = function() {
+            var validateOpts = {
+
+                'messages': {
+                    'title': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_TITLE__', 'globalemsg')
+                    },
+                    'description': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_DESCRIPTION__', 'globalemsg')
+                    },
+                    'date_start': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_DATE_START__', 'globalemsg'),
+                        'date': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_FORMAT_DATE__', 'globalemsg')
+                    },
+                    'date_end': {
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_DATE_END__', 'globalemsg'),
+                        'date': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_FORMAT_DATE__', 'globalemsg')
+                    }
+                    },
+                'submitHandler': createGms
+            };
+            oae.api.util.validation().validate($('#globalemsg-gms-form', $rootel), validateOpts);
+        };
+
         /**
          * Initialize the task list widget
          */
@@ -142,9 +270,10 @@ define(['jquery', 'oae.core'], function($, oae) {
             // Get the tasks
             getGms();
         };
-
+      
         addBinding();
         initGmsList();
+        setUpValidation();
         
 
     };
