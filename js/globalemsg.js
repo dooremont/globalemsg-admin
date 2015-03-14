@@ -84,13 +84,19 @@ define(['jquery', 'oae.core'], function($, oae) {
                     );
 
                     }
-                       if (donnee.status ='401'){
+                       if (donnee.status ='403'){
                         oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__GMS_NOT_CREATED__', 'globalemsg'),
                         oae.api.i18n.translate('__MSG__GMS_DATE_EQUAL__', 'globalemsg'),
                         'error'
                     );
-
+                    }
+                         if (donnee.status ='401'){
+                        oae.api.util.notification(
+                        oae.api.i18n.translate('__MSG__GMS_NOT_CREATED__', 'globalemsg'),
+                        oae.api.i18n.translate('__MSG__GMS_ADMIN_NOT_CREATED__', 'globalemsg'),
+                        'error'
+                    );
                     }
 
                 }
