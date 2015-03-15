@@ -25,23 +25,23 @@ define(['jquery', 'oae.core'], function($, oae) {
          */
         var deleteGms = function() {
             // Get the `created` timestamp we stored in a data attribute on the
-            // button. Hilary needs it to know which task to delete
+            // button. Hilary needs it to know which gms to delete
             var gmsCreated = $(this).attr('data-created');
 
             $.ajax({
                 'url': '/api/globalemsg/' + gmsCreated,
                 'type': 'DELETE',
                 'success': function(data) {
-                    // Show a success notification when the task has been deleted
+                    // Show a success notification when the gms has been deleted
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__GMS_DELETED__', 'globalemsg'),
                         oae.api.i18n.translate('__MSG__GMS_DELETE_SUCCESS__', 'globalemsg')
                     );
-                    // Retrieve the new list of tasks
+                    // Retrieve the new list of messages
                     getGms();
                 },
                 'error': function() {
-                    // Show a failure notification when the task couldn't be deleted
+                    // Show a failure notification when the gms couldn't be deleted
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__GMS_NOT_DELETED__', 'globalemsg'),
                         oae.api.i18n.translate('__MSG__GMS_DELETE_FAILED__', 'globalemsg'),
@@ -112,9 +112,16 @@ define(['jquery', 'oae.core'], function($, oae) {
          */
         var renderGmsList = function(gmss) {
             oae.api.util.template().render($('#globalemsg-gms-template', $rootel), {
-                'gmss': gmss
+                'gmss': gmss,
+                'isEnabled': oae.api.config.getValue('oae-globalemsg', 'GlobaleMessage', 'enabled')
             }, $('#globalemsg-gms-container', $rootel));
              console.log("List gmss",gmss);
+             console.log("isEnabled",oae.api.config.getValue('oae-globalemsg', 'GlobaleMessage', 'enabled'));
+
+
+       
+
+
         };
 
         /**
@@ -184,13 +191,22 @@ define(['jquery', 'oae.core'], function($, oae) {
          * Initialize the task list widget
          */
         var initGmsList = function() {
-            // Render the task list header
-            // 
-            renderGmsListHeader();
-             //$(function() {$( "#datepicker" ).datepicker();});
+           // Test isEnabled
+            if (oae.api.config.getValue('oae-globalemsg', 'GlobaleMessage', 'enabled')){
 
-            // Get the tasks
+                             oae.api.util.template().render($('#globalemsg-container', $rootel), {
+                'isEnabled': oae.api.config.getValue('oae-globalemsg', 'GlobaleMessage', 'enabled'),
+                'isDisabled': false
+            }, $('#globalemsg-container', $rootel));
+
+            renderGmsListHeader();
             getGms();
+        }else{
+             oae.api.util.template().render($('#globalemsg-container', $rootel), {
+                'isEnabled': false,
+                'isDisabled': true
+            }, $('#globalemsg-container', $rootel));
+        }
         };
       
         addBinding();
