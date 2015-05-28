@@ -9,7 +9,7 @@ in Directory 3akai-ux/node_modules/oae-admin/
 git clone https://github.com/dooremont/globalemsg-admin.git
 edit file : 3akai-ux/admin/admin.js
 modify line 160 }); by },
-and add 
+and add `
                 {
                     'id': 'globalemsg-admin',
                     'icon': 'fa-exclamation-triangle',
@@ -28,4 +28,4 @@ and add
                             ]
                         }
                     ]
-                });
+                });`
