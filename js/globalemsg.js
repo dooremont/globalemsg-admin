@@ -178,7 +178,7 @@ define(['jquery', 'oae.core'], function($, oae) {
                         'date': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_FORMAT_DATE__', 'globalemsg')
                     },
                     'date_end': {
-                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_DATE_END__', 'globalemsg'),
+                        'required': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_DATE_END__', 'globalemsg'),
                         'date': oae.api.i18n.translate('__MSG__PLEASE_ENTER_YOUR_FORMAT_DATE__', 'globalemsg')
                     }
                     },
